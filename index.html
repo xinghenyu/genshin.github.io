@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原神</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./css/basic.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="icon" href="https://ts3.tc.mm.bing.net/th/id/ODLS.4304f3c0-2302-44d1-b369-363c46725a90?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2" type="image/x-icon">
+</head>
+<body>
+    <!-- 头部 -->
+     <div class="header">
+        <ul>
+            <li><img src="https://act-webstatic.mihoyo.com/puzzle/hk4e/pz_FW4VVOSK3w/resource/puzzle/2025/04/17/15fb8bc421a0d397baf0aef2555efffb_6207377033597062496.png?x-oss-process=image/format,webp/quality,Q_90" alt=""></li>
+            <li><a href="">官网</a></li>
+            <li><a href="">角色介绍</a></li>
+            <li><a href="">攻略</a></li>
+            <li><a href="">米游社</a></li>
+            <li><a href="">PC端下载</a></li>
+            <li><a href="">Andriod端下载</a></li>
+        </ul>
+     </div>
+    <!-- 第一栏 -->
+     <!-- 轮播图 -->
+    <div class="wrapper box">
+        <div class="zhutilan">
+            <div class="left">
+                <div class="top">
+                    <p>您已观看本站0秒</p>
+                    <script>
+                        let times = 0
+                        const webtimeData = document.querySelector('.left p')
+                        let webtime = setInterval(function(){
+                            times++
+                            webtimeData.innerHTML = `您已观看本站${times}秒`
+                        },1000)
+                    </script>
+                </div>
+                <div class="bottom">
+                    <div class="weather-container">
+                        <h1>天气</h1>
+                        <div class="weatherinfo">
+                            <p>省份：正在查询</p>
+                            <p>城市：正在查询</p>
+                            <p>天气现象：正在查询</p>
+                            <p>气温：正在查询</p>
+                            <p>风向：正在查询</p>
+                            <p>风力：正在查询</p>
+                            <p>湿度：正在查询</p>
+                            <p>发布时间：正在查询</p>
+                        </div>
+                    </div>
+                    <script>
+                        // 设置跨域请求头
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    
+    // 定义post请求方法
+    const axiosPost = function (url, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post(url, params)
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    };
+    
+    // 定义get请求方法
+    const axiosGet = function (url, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get(url, {
+                    params,
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    };
+    
+    // 获取城市编码
+    async function getCity() {
+        const params = {
+            // key: '5b8ea533efea127ec880f9a859089874', // 你的key
+            address: '福建省福州市长乐区', // 你的地址信息
+        };
+        try {
+            let res = await axiosGet('https://restapi.amap.com/v3/geocode/geo', params);
+            return res.data.geocodes[0].adcode;
+        } catch (error) {
+            console.error('获取城市编码出错：', error);
+            document.getElementById('weatherInfo').innerHTML = '<p style="color: red;">获取城市编码失败</p>';
+            throw error;
+        }
+    }
+    
+    async function getWeather() {
+        try {
+            const adcode = await getCity();
+            const params = {
+                // key: '5b8ea533efea127ec880f9a859089874', // 你的key
+                city: adcode,
+                extensions: 'base'
+            };
+            
+            let res = await axiosGet('https://restapi.amap.com/v3/weather/weatherInfo', params);
+            const weatherData = res.data.lives[0];
+            console.log('天气数据：', weatherData);
+            
+            // 显示天气信息到页面上
+            const weatherinfo = document.querySelector('.weatherinfo');
+            weatherinfo.innerHTML = `
+                            <p>省份：${weatherData.province}</p>
+                            <p>城市：${weatherData.city}</p>
+                            <p>天气现象：${weatherData.weather}</p>
+                            <p>气温：${weatherData.temperature}°C</p>
+                            <p>风向：${weatherData.winddirection}</p>
+                            <p>风力：${weatherData.windpower}</p>
+                            <p>湿度：${weatherData.humidity}%</p>
+                            <p>发布时间：${weatherData.reporttime}</p>
+            `;
+        } catch (error) {
+            console.error('获取天气信息出错：', error);
+            document.getElementById('weatherInfo').innerHTML = '<p style="color: red;">获取天气信息失败</p>';
+        }
+    }
+    
+    // 页面加载完成后获取天气
+    window.onload = function() {
+        getWeather();
+    }
+                    </script>
+
+                </div>
+            </div>
+            <div class="middle">
+                <div class="slider">
+                    <div class="slider-wrapper">
+                        <img src="./images/lbt (1).png" alt="">
+                    </div>
+                    <div class="slider-footer">
+                        <p>纳西妲</p>
+                        <ul class="slider-indicator">
+                            <li class="active"></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <script>
+                //轮播图数据
+                const sliderDate = [
+                    {url:'./images/lbt (1).png', text: '纳西妲',color:'#A9CA6F'},
+                    {url:'./images/lbt (2).png', text: '茜特菈莉',color:'#A89FE9'},
+                    {url:'./images/lbt (3).png', text: '芙宁娜',color:'#4C5964'},
+                    {url:'./images/lbt (4).png', text: '宵宫',color:'#EA6F53'},
+                    {url:'./images/lbt (5).png', text: '希格雯',color:'#F5A89C'},
+                    {url:'./images/lbt (6).png', text: '可莉',color:'#8F1A1B'}
+                ]
+                let i = 0
+                //获取元素
+                const img = document.querySelector('.slider-wrapper img')
+                const text = document.querySelector('.slider-footer p')
+                //计时器
+                let timer = setInterval(function(){
+                    i++
+                    if(i >= sliderDate.length){
+                        i = 0
+                    }
+                    img.src = sliderDate[i].url
+                    text.innerHTML = sliderDate[i].text
+                    text.style.color = sliderDate[i].color
+                    //先删除之前的再添加
+                    document.querySelector('.slider-indicator .active').classList.remove('active')
+                    document.querySelector(`.slider-indicator li:nth-child(${i + 1})`).classList.add('active')
+                }, 600);
+            </script>
+            </div>
+            <div class="right"></div>
+        </div>
+    </div>
+    <!-- 第二部分 -->
+
+    <div class="wrapper box">
+        <audio src="./music/使一颗心免于哀伤.mp3"></audio>
+    </div>
+    <div class="wrapper box">3</div>
+</body>
+</html>
