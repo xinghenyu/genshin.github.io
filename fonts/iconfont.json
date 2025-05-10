@@ -1,0 +1,51 @@
+{
+  "id": "4916957",
+  "name": "genshin",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6151260",
+      "name": "pause circle",
+      "font_class": "pausecircle",
+      "unicode": "e80d",
+      "unicode_decimal": 59405
+    },
+    {
+      "icon_id": "6151261",
+      "name": "stop circle",
+      "font_class": "stopcircle",
+      "unicode": "e80e",
+      "unicode_decimal": 59406
+    },
+    {
+      "icon_id": "6151262",
+      "name": "play circle",
+      "font_class": "playcircle",
+      "unicode": "e80f",
+      "unicode_decimal": 59407
+    },
+    {
+      "icon_id": "6151310",
+      "name": "indent",
+      "font_class": "indent",
+      "unicode": "e834",
+      "unicode_decimal": 59444
+    },
+    {
+      "icon_id": "6151385",
+      "name": "caret-right",
+      "font_class": "caret-right",
+      "unicode": "e845",
+      "unicode_decimal": 59461
+    },
+    {
+      "icon_id": "6151386",
+      "name": "caret-left",
+      "font_class": "caret-left",
+      "unicode": "e846",
+      "unicode_decimal": 59462
+    }
+  ]
+}

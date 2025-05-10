@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>原神</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="./css/basic.css">
     <link rel="stylesheet" href="./css/index.css">
-    <link rel="icon" href="https://ts3.tc.mm.bing.net/th/id/ODLS.4304f3c0-2302-44d1-b369-363c46725a90?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2" type="image/x-icon">
+    <!-- 控制按钮 -->
+    <link rel="stylesheet" href="./fonts/iconfont.css">
 </head>
 <body>
     <!-- 头部 -->
@@ -54,87 +56,87 @@
                     </div>
                     <script>
                         // 设置跨域请求头
-    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-    
-    // 定义post请求方法
-    const axiosPost = function (url, params) {
-        return new Promise((resolve, reject) => {
-            axios
-                .post(url, params)
-                .then(res => {
-                    resolve(res);
-                })
-                .catch(err => {
-                    reject(err);
-                });
-        });
-    };
-    
-    // 定义get请求方法
-    const axiosGet = function (url, params) {
-        return new Promise((resolve, reject) => {
-            axios
-                .get(url, {
-                    params,
-                })
-                .then(res => {
-                    resolve(res);
-                })
-                .catch(err => {
-                    reject(err);
-                });
-        });
-    };
-    
-    // 获取城市编码
-    async function getCity() {
-        const params = {
-            // key: '5b8ea533efea127ec880f9a859089874', // 你的key
-            address: '福建省福州市长乐区', // 你的地址信息
-        };
-        try {
-            let res = await axiosGet('https://restapi.amap.com/v3/geocode/geo', params);
-            return res.data.geocodes[0].adcode;
-        } catch (error) {
-            console.error('获取城市编码出错：', error);
-            document.getElementById('weatherInfo').innerHTML = '<p style="color: red;">获取城市编码失败</p>';
-            throw error;
-        }
-    }
-    
-    async function getWeather() {
-        try {
-            const adcode = await getCity();
-            const params = {
-                // key: '5b8ea533efea127ec880f9a859089874', // 你的key
-                city: adcode,
-                extensions: 'base'
-            };
-            
-            let res = await axiosGet('https://restapi.amap.com/v3/weather/weatherInfo', params);
-            const weatherData = res.data.lives[0];
-            console.log('天气数据：', weatherData);
-            
-            // 显示天气信息到页面上
-            const weatherinfo = document.querySelector('.weatherinfo');
-            weatherinfo.innerHTML = `
-                            <p>省份：${weatherData.province}</p>
-                            <p>城市：${weatherData.city}</p>
-                            <p>天气现象：${weatherData.weather}</p>
-                            <p>气温：${weatherData.temperature}°C</p>
-                            <p>风向：${weatherData.winddirection}</p>
-                            <p>风力：${weatherData.windpower}</p>
-                            <p>湿度：${weatherData.humidity}%</p>
-                            <p>发布时间：${weatherData.reporttime}</p>
-            `;
-        } catch (error) {
-            console.error('获取天气信息出错：', error);
-            document.getElementById('weatherInfo').innerHTML = '<p style="color: red;">获取天气信息失败</p>';
-        }
-    }
-    
-    // 页面加载完成后获取天气
-    window.onload = function() {
+                        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+                        
+                        // 定义post请求方法
+                        const axiosPost = function (url, params) {
+                            return new Promise((resolve, reject) => {
+                                axios
+                                    .post(url, params)
+                                    .then(res => {
+                                        resolve(res);
+                                    })
+                                    .catch(err => {
+                                        reject(err);
+                                    });
+                            });
+                        };
+                        
+                        // 定义get请求方法
+                        const axiosGet = function (url, params) {
+                            return new Promise((resolve, reject) => {
+                                axios
+                                    .get(url, {
+                                        params,
+                                    })
+                                    .then(res => {
+                                        resolve(res);
+                                    })
+                                    .catch(err => {
+                                        reject(err);
+                                    });
+                            });
+                        };
+                        
+                        // 获取城市编码
+                        async function getCity() {
+                            const params = {
+                                key: '5b8ea533efea127ec880f9a859089874', // 你的key
+                                address: '福建省福州市长乐区', // 你的地址信息
+                            };
+                            try {
+                                let res = await axiosGet('https://restapi.amap.com/v3/geocode/geo', params);
+                                return res.data.geocodes[0].adcode;
+                            } catch (error) {
+                                console.error('获取城市编码出错：', error);
+                                document.getElementById('weatherInfo').innerHTML = '<p style="color: red;">获取城市编码失败</p>';
+                                throw error;
+                            }
+                        }
+                        
+                        async function getWeather() {
+                            try {
+                                const adcode = await getCity();
+                                const params = {
+                                    key: '5b8ea533efea127ec880f9a859089874', // 你的key
+                                    city: adcode,
+                                    extensions: 'base'
+                                };
+                                
+                                let res = await axiosGet('https://restapi.amap.com/v3/weather/weatherInfo', params);
+                                const weatherData = res.data.lives[0];
+                                console.log('天气数据：', weatherData);
+                                
+                                // 显示天气信息到页面上
+                                const weatherinfo = document.querySelector('.weatherinfo');
+                                weatherinfo.innerHTML = `
+                                                <p>省份：${weatherData.province}</p>
+                                                <p>城市：${weatherData.city}</p>
+                                                <p>天气现象：${weatherData.weather}</p>
+                                                <p>气温：${weatherData.temperature}°C</p>
+                                                <p>风向：${weatherData.winddirection}</p>
+                                                <p>风力：${weatherData.windpower}</p>
+                                                <p>湿度：${weatherData.humidity}%</p>
+                                                <p>发布时间：${weatherData.reporttime}</p>
+                                `;
+                            } catch (error) {
+                                console.error('获取天气信息出错：', error);
+                                document.getElementById('weatherInfo').innerHTML = '<p style="color: red;">获取天气信息失败</p>';
+                            }
+                        }
+                        
+                        // 页面加载完成后获取天气
+                        window.onload = function() {
         getWeather();
     }
                     </script>
@@ -185,17 +187,193 @@
                     //先删除之前的再添加
                     document.querySelector('.slider-indicator .active').classList.remove('active')
                     document.querySelector(`.slider-indicator li:nth-child(${i + 1})`).classList.add('active')
-                }, 600);
+                }, 2500);
             </script>
             </div>
             <div class="right"></div>
         </div>
     </div>
     <!-- 第二部分 -->
-
+<!-- 音乐播放器 -->
     <div class="wrapper box">
-        <audio src="./music/使一颗心免于哀伤.mp3"></audio>
+        <div class="player">
+            <div class="left">
+                <audio src="./music/清风散林缬.mp3"></audio>
+                <div class="img">
+                    <img src="./images/lbt (1).png" alt="">
+                </div>
+                <!-- 控制器 -->
+                <div class="player-controls">
+                    <!-- 歌曲信息    -->
+                    <div class="song-info">
+                        <h3>正在加载...</h3>
+                        <p>未知歌手</p>
+                    </div>
+
+                    <!-- 进度条 -->
+                    <!-- <div class="progress">
+                        <div class="bar"></div>
+                    </div> -->
+                    <!-- 时间 -->
+                    <!-- <div class="time">
+                        <span class="now">00:00</span>
+                        <span class="end">00:00</span>
+                    </div> -->
+
+
+                    <!-- 控制按钮 -->
+                    <div class="control-button">
+                            <button id="prev-btn" class="iconfont icon-caret-left"></button>
+                            <button id="play-btn" class="iconfont 
+                            icon-pausecircle"></button>
+                            <button id="next-btn" class="iconfont icon-caret-right"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div class="lrc-container">
+                    <h3>歌词</h3>
+                    <div class="lrc-content">
+                        <p>加载歌词中...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="wrapper box">3</div>
+        <script>
+             const songs = [
+                {url:'./music/清风散林缬.mp3', name:'清风散林缬', singer:'HOYO-MiX', img:'./images/清风散林缬.jpg',lcr:'./lrc/清风散林缬.lrc'},
+                {url:'./music/硝华流焰.mp3', name:'硝华流焰', singer:'HOYO-MiX', img:'./images/硝华流焰.jpg',lcr:'./lrc/硝华流焰.lrc'},
+                {url:'./music/环佩凭栏望千帆.mp3', name:'环佩凭栏望千帆', singer:'陈致逸;HOYO-MiX', img:'./images/环佩凭栏望千帆.jpg',lcr:'./lrc/环佩凭栏望千帆 .lrc'},
+                {url:'./music/诗人的工作.mp3', name:'诗人的工作', singer:'陈致逸;HOYO-MiX', img:'./images/诗人的工作.jpg',lcr:'./lrc/诗人的工作.lrc'}
+            ]
+            console.log(songs.length);
+            
+            //获取文字
+            const songInfoH3 = document.querySelector('.song-info h3');
+            const songInfoP = document.querySelector('.song-info p');
+                //获取歌词
+                const lrcContent = document.querySelector('.lrc-content')
+                //显示
+                    function loadLyrics(lrcPath) {
+                    
+                    // 加载歌词文件
+                    fetch(lrcPath)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('歌词文件加载失败');
+                            }
+                            return response.text();
+                        })
+                        .then(lrcText => {
+                            // 简单解析歌词
+                            const lines = lrcText.split('\n');
+                            let lyricsHTML = '';
+                            
+                            // 提取歌词文本 - 使用更宽松的正则表达式
+                lines.forEach(line => {
+                    // 匹配格式: [xx:xx.xx] 文字内容
+                    // 或者 [xx:xx:xx] 文字内容
+                    const match = line.match(/^\[(\d+:\d+[:.]\d+)\](.*)/);
+                    if (match && match[2]) {
+                        lyricsHTML += `<p>${match[2].trim() || '♪'}</p>`; // 如果歌词为空显示音符
+                    } else if (line.trim() && !line.startsWith('[')) {
+                        // 处理没有时间标签的纯文本行
+                        lyricsHTML += `<p>${line.trim()}</p>`;
+                    }
+                });
+                            
+                            // 如果没有歌词
+                            if (!lyricsHTML) {
+                                lrcContent.innerHTML = '<p class="loading-lyrics">暂无歌词</p>';
+                            } else {
+                                lrcContent.innerHTML = lyricsHTML;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('加载歌词失败:', error);
+                            lrcContent.innerHTML = '<p class="loading-lyrics">暂无歌词</p>';
+                        });
+                    }
+
+            //获取图片
+            const imgs = document.querySelector('.img img')
+            
+            //获取音乐元素
+            const audio = document.querySelector('audio')
+            const playBtn = document.querySelector('#play-btn')
+            const prevBtn = document.querySelector('#prev-btn')
+            const nextBtn = document.querySelector('#next-btn')
+            //创建按钮监听
+            //播放和暂停
+            playBtn.addEventListener('click',function(){
+                if(audio.paused){
+                    audio.play();
+                    playBtn.className = 'iconfont icon-stopcircle';
+
+                    songInfoH3.innerHTML = songs[songIndex].name
+                    songInfoP.innerHTML = songs[songIndex].singer
+
+                    imgs.src = songs[songIndex].img
+                    loadLyrics(songs[songIndex].lcr);
+                }
+                else{
+                    audio.pause();
+                    loadLyrics(songs[songIndex].lcr);
+                    playBtn.className = 'iconfont icon-pausecircle';
+
+                    songInfoH3.innerHTML = songs[songIndex].name
+                    songInfoP.innerHTML = songs[songIndex].singer
+                    
+
+                    imgs.src = songs[songIndex].img
+                    loadLyrics(songs[songIndex].lcr);
+                }
+            })
+            //上一首
+            let songIndex = 0    //索引
+            prevBtn.addEventListener('click',function(){
+                songIndex--;
+                if(songIndex < 0){
+                    songIndex = songs.length - 1;
+                }
+                audio.src = songs[songIndex].url
+                audio.play();
+
+
+                songInfoH3.innerHTML = songs[songIndex].name
+                songInfoP.innerHTML = songs[songIndex].singer
+
+
+                playBtn.className = 'iconfont icon-stopcircle';
+                imgs.src = songs[songIndex].img
+                loadLyrics(songs[songIndex].lcr);
+                if(!audio.paused){
+                    audio.play();
+                }
+                console.log(songIndex);
+                
+            })
+            //下一首
+            nextBtn.addEventListener('click',function(){
+                songIndex++;
+                if(songIndex >= songs.length){
+                    songIndex = 0;
+                }
+                audio.src = songs[songIndex].url
+                audio.play();
+                // 信息
+                songInfoH3.innerHTML = songs[songIndex].name
+                songInfoP.innerHTML = songs[songIndex].singer
+                //信息
+                playBtn.className = 'iconfont icon-stopcircle';
+                imgs.src = songs[songIndex].img
+                loadLyrics(songs[songIndex].lcr);
+                if(!audio.paused){
+                    audio.play();
+                }
+                console.log(songIndex);
+            })    
+        </script>
 </body>
 </html>
