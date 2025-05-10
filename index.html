@@ -91,7 +91,7 @@
                         // 获取城市编码
                         async function getCity() {
                             const params = {
-                                key: '5b8ea533efea127ec880f9a859089874', // 你的key
+                                key: '', // 你的key
                                 address: '福建省福州市长乐区', // 你的地址信息
                             };
                             try {
@@ -108,7 +108,7 @@
                             try {
                                 const adcode = await getCity();
                                 const params = {
-                                    key: '5b8ea533efea127ec880f9a859089874', // 你的key
+                                    key: '', // 你的key
                                     city: adcode,
                                     extensions: 'base'
                                 };
